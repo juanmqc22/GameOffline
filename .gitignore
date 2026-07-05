@@ -1,0 +1,9 @@
+# Godot 4+
+game/.godot/
+game/.import/
+game/export.cfg
+game/export_presets.cfg
+*.translation
+
+# macOS
+.DS_Store

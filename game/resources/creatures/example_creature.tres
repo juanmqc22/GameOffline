@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="CreatureData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/creatures/creature_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+creature_id = "vix"
+display_name = "Vix"
+flavor_text = "Uma raposa-do-musgo arredia que observa de longe antes de se aproximar."
+favorite_food_id = "baga_vermelha"
+explore_weight = 1.4
+rest_weight = 0.8
+help_weight = 1.0
+flee_weight = 1.3
+flee_threshold = 40.0
+bond_threshold = 65.0
+trust = 0.0
+hunger = 100.0
+fatigue = 0.0
+is_bonded = false
+is_injured = false
+has_left = false
+memory_flags = []

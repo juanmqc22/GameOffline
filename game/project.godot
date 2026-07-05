@@ -1,0 +1,42 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are meant to be edited using the UI.
+;
+; Format:
+;   [section] ; section goes below until the next section definition
+
+config_version=5
+
+[application]
+
+config/name="Seiva"
+config/description="Sobrevivencia e vinculo com criaturas. Offline, iPhone, dev solo."
+run/main_scene="res://scenes/world/Main.tscn"
+config/features=PackedStringArray("4.3", "Mobile")
+boot_splash/bg_color=Color(0.05, 0.07, 0.05, 1)
+
+[display]
+
+window/size/viewport_width=1170
+window/size/viewport_height=2532
+window/handheld/orientation=1
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+
+[autoload]
+
+GameState="*res://scripts/autoload/game_state.gd"
+CreatureRegistry="*res://scripts/autoload/creature_registry.gd"
+TimeManager="*res://scripts/autoload/time_manager.gd"
+SaveManager="*res://scripts/autoload/save_manager.gd"
+
+[input_devices]
+
+pointing/emulate_touch_from_mouse=true
+
+[rendering]
+
+renderer/rendering_method="mobile"
+renderer/rendering_method.mobile="mobile"
+textures/vram_compression/import_etc2_astc=true
+environment/defaults/default_clear_color=Color(0.55, 0.75, 0.85, 1)
