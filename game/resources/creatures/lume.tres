@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="CreatureData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/creatures/creature_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+creature_id = "lume"
+display_name = "Lume"
+flavor_text = "Uma ave-vagalume curiosa que se aproxima por conta própria — conquistar sua confiança de verdade é outra história."
+favorite_food_id = "baga_vermelha"
+explore_weight = 1.8
+rest_weight = 0.6
+help_weight = 0.8
+flee_weight = 1.0
+flee_threshold = 25.0
+bond_threshold = 80.0
+body_color = Color(0.95, 0.82, 0.38, 1)
+accent_color = Color(0.85, 0.4, 0.15, 1)
+trust = 0.0
+hunger = 100.0
+fatigue = 0.0
+is_bonded = false
+is_injured = false
+has_left = false
+memory_flags = []

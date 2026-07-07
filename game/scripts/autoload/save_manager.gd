@@ -24,7 +24,10 @@ func save_game() -> void:
 		"player_hunger": GameState.player_hunger,
 		"player_thirst": GameState.player_thirst,
 		"player_sleep": GameState.player_sleep,
+		"player_health": GameState.player_health,
 		"bonded_creature_ids": GameState.bonded_creature_ids,
+		"inventory": GameState.inventory,
+		"world_edits": GameState.world_edits,
 		"creatures": creatures_out,
 	}
 
@@ -59,6 +62,18 @@ func load_game() -> bool:
 	var bonded_ids: Array = parsed.get("bonded_creature_ids", [])
 	GameState.bonded_creature_ids.assign(bonded_ids)
 
+	GameState.player_health = parsed.get("player_health", 100.0)
+
+	GameState.inventory.clear()
+	var saved_inventory: Dictionary = parsed.get("inventory", {})
+	for item_id in saved_inventory:
+		GameState.inventory[item_id] = int(saved_inventory[item_id]) # JSON devolve floats
+
+	GameState.world_edits.clear()
+	var saved_edits: Dictionary = parsed.get("world_edits", {})
+	for key in saved_edits:
+		GameState.world_edits[key] = int(saved_edits[key])
+
 	for entry in parsed.get("creatures", []):
 		var creature := CreatureRegistry.get_creature(entry.get("creature_id", ""))
 		if creature == null:
@@ -73,4 +88,5 @@ func load_game() -> bool:
 		flags.assign(entry.get("memory_flags", []))
 		creature.memory_flags = flags
 
+	GameState.emit_state_signals()
 	return true

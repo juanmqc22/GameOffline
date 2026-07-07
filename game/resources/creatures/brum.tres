@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="CreatureData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/creatures/creature_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+creature_id = "brum"
+display_name = "Brum"
+flavor_text = "Um tatu-pedra pachorrento que quase nunca foge — mas leva tempo pra confiar de verdade."
+favorite_food_id = "cogumelo_azul"
+explore_weight = 0.7
+rest_weight = 1.5
+help_weight = 1.2
+flee_weight = 0.6
+flee_threshold = 15.0
+bond_threshold = 55.0
+body_color = Color(0.55, 0.53, 0.5, 1)
+accent_color = Color(0.32, 0.3, 0.28, 1)
+trust = 0.0
+hunger = 100.0
+fatigue = 0.0
+is_bonded = false
+is_injured = false
+has_left = false
+memory_flags = []

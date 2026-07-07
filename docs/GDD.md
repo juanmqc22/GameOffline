@@ -20,12 +20,12 @@ O cruzamento que ninguém faz hoje:
 | The Forest / Green Hell | Sobrevivência crua, escassez real | Terror gráfico, sanidade, doenças complexas |
 | Palworld | Criaturas que ajudam na base | Criaturas como ferramentas descartáveis, coleção em massa |
 | Pokémon | O prazer do vínculo | Times de 6, troca de membros, times descartáveis |
-| Minecraft / Valheim | Base evolui, defesa, automação | Blocos infinitos livres — aqui a construção é mais guiada |
+| Minecraft / Valheim | **A base inteira (decisão de 2026-07): mundo voxel aberto, mineração, construção livre bloco a bloco, fauna, ameaças noturnas, biomas — e o visual em blocos** | Multiplayer, mecânicas de circuito/automação genérica (a automação aqui vem das criaturas, seção 9) |
 | Zelda | Mundo com mistério, quer explorar mais | Combate estilizado, dungeons puzzle |
 
 **A frase que resume o jogo:** *"Eu não coleciono criaturas. Eu conquisto quem fica."*
 
-O diferencial técnico-de-design: nenhum outro jogo do gênero faz **sobrevivência real + vínculo individual com memória + automação de base ligada diretamente a quem você conquistou**. Cada criatura bonded desbloqueia uma capacidade única de base (ver seção 9) — isso é o que faz os sistemas conversarem entre si em vez de existirem em paralelo.
+**Reposicionamento (2026-07):** o jogo é assumidamente um *Minecraft-like* — a fundação (mundo voxel aberto, minerar, construir livremente, caçar, sobreviver à noite, explorar biomas) copia o que o Minecraft já acertou, sem reinventar. O diferencial NÃO está na base: está no elenco pequeno de **criaturas especiais** com personalidade, memória e vínculo individual (seções 8 e 9), que o Minecraft não tem. Nenhum outro jogo do gênero faz **sobrevivência real + vínculo individual com memória + automação de base ligada diretamente a quem você conquistou**. Cada criatura bonded desbloqueia uma capacidade única de base (ver seção 9) — isso é o que faz os sistemas conversarem entre si em vez de existirem em paralelo.
 
 ---
 
@@ -60,23 +60,28 @@ O mundo tem ciclos sazonais que mudam biomas e forçam adaptação — não powe
 - **Sede** — encontrar e tratar água.
 - **Sono/Fadiga** — dormir afeta capacidade física no dia seguinte; ciclo dia/noite real.
 
+**Vida (HP)** existe como consequência, não como quarto pilar: dano vem de combate (vultos, queda futura) e de negligência extrema (fome/sede zeradas corroem a vida). Zerar a vida não é morte permanente do jogador — ele acorda no acampamento com parte da vida (estilo Minecraft), o custo é o deslocamento e o que ficou pra trás.
+
 **Explicitamente fora de escopo:** temperatura, doenças, sanidade. Não agregam divertimento suficiente pra pagar o custo de desenvolvimento e de atenção do jogador — vira barra chata, não tensão.
 
 ---
 
 ## 6. Construção de Base
 
-Três pilares, todos igualmente importantes:
+**Construção livre bloco a bloco, estilo Minecraft** (decisão de 2026-07 — substitui a ideia anterior de construção "mais guiada"): tudo que se minera pode ser colocado de volta em qualquer lugar do mundo. A base é o que o jogador quiser erguer — parede por parede, sem receitas de estrutura obrigatórias.
+
+Três pilares por cima disso, todos igualmente importantes:
 1. **Automação de produção** — armadilhas, fazendas, processamento automático — mas desbloqueada por criaturas bonded, não por tecnologia genérica (ver seção 9).
-2. **Defesa contra ameaças** — paliçadas, torres, eventos de ataque noturno.
+2. **Defesa contra ameaças** — muros e torres construídos bloco a bloco contra os vultos e eventos noturnos maiores.
 3. **Lar vivo** — a base é onde as criaturas realmente vivem: dormem, comem, interagem entre si e com você visivelmente. Não é um menu de status, é um lugar que você vê acontecer.
 
 ---
 
 ## 7. Exploração e Mundo
 
-- Mundo semi-aberto, biomas conectados (não infinito/procedural puro — permite mão autoral em segredos e ruínas, mais viável pra dev solo que geração infinita balanceada).
-- Verticalidade real (cavernas, penhascos, copas de árvore) — natural em 3D, sem precisar simular profundidade como em 2D.
+- **Mundo aberto voxel** (2026-07): terreno em blocos gerado por seed, com biomas distintos lado a lado (seção 13), totalmente escavável e construível. Começa como uma ilha grande; a ambição é crescer o mapa (mais ilhas/continente por chunks) conforme o jogo evolui — aberto em possibilidade, autoral em conteúdo.
+- Cada bioma tem cara, recursos e fauna próprios — a razão de explorar é ver o que vive lá e o que dá pra trazer de volta.
+- Verticalidade real: montanhas com neve no topo, cavar até a rocha-mãe atrás de minérios, e cavernas autorais mais à frente.
 - Segredos e ruínas ambientais contam história sem texto obrigatório (ver seção 14 sobre narrativa ambiental).
 - Eventos de mundo (uma tempestade, uma migração de criaturas selvagens) criam variedade sem exigir conteúdo infinito.
 
@@ -121,7 +126,12 @@ Ao cruzar o limiar de confiança (varia por personalidade — criaturas arredias
 
 ## 10. Combate
 
-Tempo real (não turnos) — coerente com o ritmo de sobrevivência/ação. Combate direto do jogador (armas craftadas, esquiva, stamina simples) + criaturas bonded que **ajudam por vontade própria** com base em personalidade/confiança (não comando de menu, reforça a autonomia da seção 8). "Guardiões" ligados a biomas funcionam como chefes que gateiam progressão de área.
+Tempo real (não turnos) — coerente com o ritmo de sobrevivência/ação. Tocar num alvo ataca (mesmo gesto de minerar — o mundo inteiro responde ao toque). Combate direto do jogador (armas craftadas, esquiva, stamina simples) + criaturas bonded que **ajudam por vontade própria** com base em personalidade/confiança (não comando de menu, reforça a autonomia da seção 8).
+
+**Três categorias de seres vivos, com papéis distintos:**
+1. **Fauna comum** — animais por bioma (capivara, cabra, lagarto...), caçáveis por carne. Sem vínculo, IA simples. É o "gado selvagem" do mundo.
+2. **Ameaças** — **vultos** surgem à noite e caçam o jogador; somem ao amanhecer; derrotá-los rende cristal (risco/recompensa de sair no escuro). Mais tipos de ameaça e eventos de ataque à base virão. "Guardiões" ligados a biomas funcionam como chefes que gateiam progressão de área.
+3. **Criaturas especiais** (seções 8–9) — o elenco com nome, personalidade e memória. **Atacá-las nunca compensa:** derruba confiança e fica gravado na memória delas.
 
 ---
 
@@ -136,14 +146,16 @@ Tempo real (não turnos) — coerente com o ritmo de sobrevivência/ação. Comb
 
 ## 12. Crafting e Economia
 
-Recursos limitados e legíveis (não centenas de materiais) — cada recurso tem um propósito claro. Equipamentos servem sobrevivência e exploração, não power fantasy de números. Raridade vem de dificuldade de acesso (bioma perigoso, criatura selvagem territorial), não de RNG puro.
+Recursos limitados e legíveis (não centenas de materiais) — cada recurso tem um propósito claro. Blocos minerados são o material de construção; **minérios na pedra (carvão, cristal — quanto mais fundo, mais raro)** e o cristal dos vultos são a moeda do crafting que vem a seguir (ferramentas, fogueira/cozinha, armas). Equipamentos servem sobrevivência e exploração, não power fantasy de números. Raridade vem de dificuldade de acesso (bioma perigoso, profundidade, noite), não de RNG puro.
 
 ---
 
 ## 13. Biomas
 
-- **MVP:** 1 bioma completo — *Floresta Viva*.
-- **v1.0:** + *Litoral* + *Cavernas Profundas*.
+Decisão de 2026-07 (substitui o plano de 1 bioma no MVP): a ilha inicial já nasce com **4 biomas lado a lado**, gerados por ruído — variedade de exploração desde o primeiro dia, ao estilo Minecraft.
+
+- **MVP:** *Campo* (spawn, fauna mansa), *Floresta* (madeira, cogumelos, sombra), *Deserto* (areia, lagartos) e *Montanha* (pedra exposta, neve, cabras).
+- **v1.0:** mapa maior (mais ilhas/continente), + *Litoral* + *Cavernas Profundas*, fauna e recursos exclusivos por bioma.
 - **Expansões:** biomas sazonais/especiais, desbloqueados por progressão de elenco e narrativa ambiental.
 
 ---
@@ -170,7 +182,9 @@ Recursos limitados e legíveis (não centenas de materiais) — cada recurso tem
 ## 16. Arquitetura Técnica (Godot, 3D low-poly)
 
 - **Motor:** Godot 4.x, GDScript.
-- **Estilo de arte:** 3D low-poly básico — formas geométricas simples, cor vertex/flat shading em vez de texturas complexas, pouca ou nenhuma animação de rig avançada no início (blend simples de poses). Prioriza tempo de sistemas sobre fidelidade visual, mas entrega volume/profundidade real que o 2D não dava.
+- **Estilo de arte:** voxel/blocos estilo Minecraft (decisão de 2026-07, substituindo o "low-poly genérico" anterior que estava derivando sem alvo claro). O mundo é uma grade de cubos de 1 m (terreno, árvores, água); personagens e criaturas são bonecos de caixas com animação simples de balanço; cores chapadas por vértice/material com sombreamento por face (topo claro, laterais escuras) e leve variação de tom por bloco — sem texturas externas. Um visual-alvo conhecido e fácil de manter consistente, extremamente leve no iPhone.
+- **Mundo voxel editável:** os blocos vivem numa estrutura de dados (`Vector3i -> id`), o mapa é dividido em chunks de 16×16 colunas e cada chunk tem malha + colisão próprias, remalhadas só quando um bloco daquele chunk muda (minerar/colocar). A geração é 100% derivada de uma **seed fixa**; o save guarda apenas o **diff de edições do jogador** (`GameState.world_edits`) — o mundo nunca é serializado inteiro. Isso também deixa o caminho aberto pra expandir o mapa por chunks no futuro.
+- **Interação de toque unificada:** toque curto no mundo = raycast → minerar / colocar (slot da hotbar selecionado) / atacar. Arrastar = câmera. Botão "Agir" = gesto de cuidado (alimentar, colher, beber) — deliberadamente separado do gesto de violência/trabalho, pra interação com criaturas especiais nunca ser um mis-tap.
 - **Build/deploy:** projeto é desenvolvido inteiramente no editor do Godot (não exige Xcode no dia a dia). O Xcode só entra no **passo final de exportação** para gerar o `.ipa` e instalar no iPhone 15 via cabo — isso o Mac dá conta tranquilamente. Quando chegarmos nesse ponto, eu te guio pelo processo (é a parte que você nunca fez, então vamos devagar nela especificamente).
 - **Autoloads (singletons):** `GameState`, `SaveManager` (serialização local em `user://`), `TimeManager` (ciclo dia/noite, estações), `CreatureRegistry`.
 - **Criaturas orientadas a dados:** cada espécie/indivíduo é um `Resource` (`.tres`) com necessidades, personalidade e referências de comportamento — novas criaturas se adicionam sem tocar em código central.
@@ -183,13 +197,14 @@ Recursos limitados e legíveis (não centenas de materiais) — cada recurso tem
 ## 17. Roadmap
 
 ### MVP (~2–3 meses, dedicação parcial)
-- 1 bioma (Floresta Viva)
-- 3 criaturas completas (necessidades, personalidade, memória, confiança, momento de vínculo)
-- Sobrevivência: fome, sede, sono
-- Base manual (construção básica, sem automação ainda)
-- Combate simples
-- Save local funcional
-- Controles touch completos
+- Ilha com 4 biomas (Campo, Floresta, Deserto, Montanha) ✅
+- Mundo voxel editável: mineração + construção livre bloco a bloco ✅
+- Fauna caçável por bioma + ameaça noturna (vultos) + vida/respawn ✅
+- 3 criaturas especiais (necessidades, personalidade, memória, confiança ✅; momento de vínculo autorado ainda falta)
+- Sobrevivência: fome, sede, sono ✅ (dormir de verdade ainda falta)
+- Crafting básico (ferramentas, fogueira/cozinhar)
+- Save local funcional ✅
+- Controles touch completos ✅
 
 ### v1.0 (~6–12 meses)
 - 3 biomas
