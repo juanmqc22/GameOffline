@@ -20,7 +20,7 @@ O cruzamento que ninguém faz hoje:
 | The Forest / Green Hell | Sobrevivência crua, escassez real | Terror gráfico, sanidade, doenças complexas |
 | Palworld | Criaturas que ajudam na base | Criaturas como ferramentas descartáveis, coleção em massa |
 | Pokémon | O prazer do vínculo | Times de 6, troca de membros, times descartáveis |
-| Minecraft / Valheim | Base evolui, defesa, automação | Blocos infinitos livres — aqui a construção é mais guiada |
+| Minecraft / Valheim | Base evolui, defesa, automação — **e a linguagem visual em blocos (voxel)** | Blocos infinitos livres — aqui a construção é mais guiada |
 | Zelda | Mundo com mistério, quer explorar mais | Combate estilizado, dungeons puzzle |
 
 **A frase que resume o jogo:** *"Eu não coleciono criaturas. Eu conquisto quem fica."*
@@ -170,7 +170,7 @@ Recursos limitados e legíveis (não centenas de materiais) — cada recurso tem
 ## 16. Arquitetura Técnica (Godot, 3D low-poly)
 
 - **Motor:** Godot 4.x, GDScript.
-- **Estilo de arte:** 3D low-poly básico — formas geométricas simples, cor vertex/flat shading em vez de texturas complexas, pouca ou nenhuma animação de rig avançada no início (blend simples de poses). Prioriza tempo de sistemas sobre fidelidade visual, mas entrega volume/profundidade real que o 2D não dava.
+- **Estilo de arte:** voxel/blocos estilo Minecraft (decisão de 2026-07, substituindo o "low-poly genérico" anterior que estava derivando sem alvo claro). O mundo é uma grade de cubos de 1 m (terreno, árvores, água); personagens e criaturas são bonecos de caixas com animação simples de balanço; cores chapadas por vértice/material com sombreamento por face (topo claro, laterais escuras) e leve variação de tom por bloco — sem texturas externas. Um visual-alvo conhecido e fácil de manter consistente, extremamente leve no iPhone. **Só a linguagem visual muda — todo o conteúdo/design planejado (vínculo, sobrevivência, base) permanece.**
 - **Build/deploy:** projeto é desenvolvido inteiramente no editor do Godot (não exige Xcode no dia a dia). O Xcode só entra no **passo final de exportação** para gerar o `.ipa` e instalar no iPhone 15 via cabo — isso o Mac dá conta tranquilamente. Quando chegarmos nesse ponto, eu te guio pelo processo (é a parte que você nunca fez, então vamos devagar nela especificamente).
 - **Autoloads (singletons):** `GameState`, `SaveManager` (serialização local em `user://`), `TimeManager` (ciclo dia/noite, estações), `CreatureRegistry`.
 - **Criaturas orientadas a dados:** cada espécie/indivíduo é um `Resource` (`.tres`) com necessidades, personalidade e referências de comportamento — novas criaturas se adicionam sem tocar em código central.

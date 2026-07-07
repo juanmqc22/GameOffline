@@ -23,6 +23,11 @@ class_name CreatureData
 ## Criaturas mais arredias exigem mais.
 @export var bond_threshold: float = 70.0
 
+## Paleta do visual em blocos (BlockyCreatureVisual) — o mesmo boneco de
+## caixas serve pro elenco inteiro, cada criatura só troca as cores.
+@export var body_color: Color = Color(0.7, 0.5, 0.3)
+@export var accent_color: Color = Color(0.3, 0.2, 0.15)
+
 ## Estado runtime (persistido pelo SaveManager) — não editar no recurso base.
 @export var trust: float = 0.0
 @export var hunger: float = 100.0
