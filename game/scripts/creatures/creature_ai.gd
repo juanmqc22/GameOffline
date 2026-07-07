@@ -24,6 +24,7 @@ var _wander_target: Vector3 = Vector3.ZERO
 var _home: Vector3 = Vector3.ZERO
 var _home_set: bool = false
 var _last_calm_seconds: float = -1000.0
+var _forced_flee_until: float = -1000.0
 
 @onready var _visual: BlockyCreatureVisual = $Visual
 
@@ -77,6 +78,10 @@ func _physics_process(delta: float) -> void:
 ## Pontua cada ação possível e retorna a de maior pontuação.
 ## Esta função é o lugar certo pra adicionar novas ações no futuro.
 func _decide_action() -> Action:
+	# pânico após apanhar do jogador sobrepõe qualquer pontuação
+	if Time.get_ticks_msec() / 1000.0 < _forced_flee_until:
+		return Action.FLEE
+
 	var scores: Dictionary = {
 		Action.WANDER: 1.0, # base — sempre uma opção viável
 		Action.REST: (100.0 - data.fatigue) * -0.01 + (data.fatigue * 0.02) * data.rest_weight,
@@ -169,6 +174,17 @@ func calm_approach() -> bool:
 	_last_calm_seconds = now
 	adjust_trust(1.5)
 	return true
+
+
+## Atacar uma criatura especial não a mata (morte real vem depois, com muito
+## mais peso — GDD 8.4): derruba confiança, grava memória e ela entra em pânico.
+func take_hit(_damage: float, _from_position: Vector3) -> void:
+	if data == null or data.has_left:
+		return
+	adjust_trust(-12.0, "fui_atacada_pelo_jogador")
+	_forced_flee_until = Time.get_ticks_msec() / 1000.0 + 8.0
+	get_tree().call_group("hud", "flash_message",
+		"%s foge de você, assustada. Isso não se esquece." % data.display_name)
 
 
 func _on_hour_passed(_game_hour: float) -> void:

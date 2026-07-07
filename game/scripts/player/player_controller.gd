@@ -1,7 +1,9 @@
 extends CharacterBody3D
 ## Player: movimento via joystick virtual (esquerda) + órbita de câmera via
-## arraste do lado direito da tela, e a interação contextual do botão "Agir"
-## (alimentar/aproximar criatura, colher, beber). Ver docs/GDD.md seções 9 e 15.
+## arraste do lado direito da tela. Toque curto no mundo (sem arrastar) faz
+## raycast e, estilo Minecraft mobile: MINERA o bloco tocado, COLOCA o bloco
+## selecionado na hotbar, ou ATACA o bicho tocado. O botão "Agir" continua
+## sendo o gesto de cuidado (alimentar/aproximar/colher/beber) — GDD §9/§15.
 ##
 ## O corpo físico NÃO gira com o movimento — só o nó Visual gira. Se o corpo
 ## girasse, o CameraPivot (filho) giraria junto e a câmera rodaria sozinha.
@@ -16,11 +18,19 @@ extends CharacterBody3D
 const GRAVITY: float = 9.8
 const AUTO_JUMP_VELOCITY: float = 5.2 # sobe degraus de 1 bloco, estilo auto-jump do MC mobile
 const FALL_RESET_Y: float = -10.0
+const REACH: float = 5.0 # alcance de minerar/colocar/atacar
+const ATTACK_DAMAGE: float = 25.0
+const TAP_MAX_DRAG: float = 16.0 # px — mais que isso é arraste de câmera, não toque
+const TAP_MAX_SECONDS: float = 0.35
 
 var _joystick: VirtualJoystick = null
 var _camera_yaw: float = 0.0
 var _camera_touch_index: int = -1
 var _last_touch_position: Vector2 = Vector2.ZERO
+var _touch_start_position: Vector2 = Vector2.ZERO
+var _touch_start_seconds: float = 0.0
+var _touch_drag_distance: float = 0.0
+var _pending_tap: Vector2 = Vector2.INF # processado no _physics_process (raycast)
 var _spawn_point: Vector3 = Vector3.ZERO
 
 
@@ -28,6 +38,7 @@ func _ready() -> void:
 	add_to_group("player")
 	# a SpringArm não pode colidir com o próprio corpo do jogador
 	$CameraPivot/SpringArm3D.add_excluded_object(get_rid())
+	GameState.player_died.connect(_on_player_died)
 
 
 func set_spawn_point(point: Vector3) -> void:
@@ -42,10 +53,17 @@ func _unhandled_input(event: InputEvent) -> void:
 			if event.pressed and _camera_touch_index == -1:
 				_camera_touch_index = event.index
 				_last_touch_position = event.position
+				_touch_start_position = event.position
+				_touch_start_seconds = Time.get_ticks_msec() / 1000.0
+				_touch_drag_distance = 0.0
 			elif not event.pressed and event.index == _camera_touch_index:
 				_camera_touch_index = -1
+				var held := Time.get_ticks_msec() / 1000.0 - _touch_start_seconds
+				if _touch_drag_distance < TAP_MAX_DRAG and held < TAP_MAX_SECONDS:
+					_pending_tap = event.position
 	elif event is InputEventScreenDrag and event.index == _camera_touch_index:
 		var delta_x := event.position.x - _last_touch_position.x
+		_touch_drag_distance += event.position.distance_to(_last_touch_position)
 		_last_touch_position = event.position
 		_camera_yaw -= delta_x * 0.01 * camera_orbit_speed
 
@@ -85,6 +103,72 @@ func _physics_process(delta: float) -> void:
 
 	visual.moving = is_moving and is_on_floor()
 	move_and_slide()
+
+	# raycast de toque fica pra física (espaço 3D travado fora daqui)
+	if _pending_tap.is_finite():
+		var tap := _pending_tap
+		_pending_tap = Vector2.INF
+		_handle_world_tap(tap)
+
+
+## Toque curto no mundo: atacar bicho > colocar bloco (slot da hotbar
+## selecionado) > minerar bloco.
+func _handle_world_tap(screen_position: Vector2) -> void:
+	var camera := get_viewport().get_camera_3d()
+	if camera == null:
+		return
+	var from := camera.project_ray_origin(screen_position)
+	var direction := camera.project_ray_normal(screen_position)
+	var query := PhysicsRayQueryParameters3D.create(from, from + direction * 60.0)
+	query.exclude = [get_rid()]
+	var hit := get_world_3d().direct_space_state.intersect_ray(query)
+	if hit.is_empty():
+		return
+	if global_position.distance_to(hit["position"]) > REACH:
+		return # longe demais — silencioso, como no Minecraft
+
+	var collider: Object = hit["collider"]
+	if collider != null and collider.has_method("take_hit"):
+		collider.take_hit(ATTACK_DAMAGE, global_position)
+		return
+
+	var world := get_tree().get_first_node_in_group("voxel_world") as VoxelWorld
+	if world == null:
+		return
+	var hit_position: Vector3 = hit["position"]
+	var hit_normal: Vector3 = hit["normal"]
+
+	var hotbar := get_tree().get_first_node_in_group("hotbar")
+	var selected: String = hotbar.selected_item() if hotbar != null else ""
+	if selected != "":
+		if GameState.item_count(selected) <= 0:
+			_flash("Você não tem mais %s." % GameState.item_name(selected).to_lower())
+			return
+		var place_cell := Vector3i((hit_position + hit_normal * 0.5).floor())
+		if _cell_overlaps_player(place_cell):
+			return
+		if world.try_place(place_cell, selected):
+			GameState.remove_item(selected)
+	else:
+		var mine_cell := Vector3i((hit_position - hit_normal * 0.5).floor())
+		var drop := world.mine_block(mine_cell)
+		if drop != "":
+			GameState.add_item(drop)
+
+
+func _cell_overlaps_player(cell: Vector3i) -> bool:
+	var center := Vector3(cell) + Vector3(0.5, 0.5, 0.5)
+	return absf(center.x - global_position.x) < 0.9 \
+		and absf(center.z - global_position.z) < 0.9 \
+		and center.y > global_position.y - 0.6 \
+		and center.y < global_position.y + 2.3
+
+
+func _on_player_died() -> void:
+	global_position = _spawn_point + Vector3.UP
+	velocity = Vector3.ZERO
+	GameState.revive_player()
+	_flash("Você desmaiou e acordou no acampamento.")
 
 
 ## Botão "Agir" (TouchControls): a prioridade é criatura > coleta > água.
@@ -166,7 +250,7 @@ func _try_collect() -> bool:
 
 
 func _try_drink() -> bool:
-	var world := get_tree().get_first_node_in_group("block_world") as BlockWorld
+	var world := get_tree().get_first_node_in_group("voxel_world") as VoxelWorld
 	if world == null:
 		return false
 	if world.nearest_water_distance(global_position) <= 2.5:

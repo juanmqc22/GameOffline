@@ -1,6 +1,6 @@
 extends Node3D
 ## Arbusto de bagas: coletável com o botão "Agir", rebrota depois de algumas
-## horas in-game. Posicionado pelo BlockWorld com seed fixa — estado não vai
+## horas in-game. Posicionado pelo VoxelWorld com seed fixa — estado não vai
 ## pro save de propósito (rebrotar entre sessões é aceitável no MVP).
 
 const REGROW_HOURS := 12

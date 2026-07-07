@@ -1,20 +1,21 @@
-[gd_scene load_steps=11 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://scripts/world/main.gd" id="1"]
-[ext_resource type="Script" path="res://scripts/world/block_world.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/world/voxel_world.gd" id="2"]
 [ext_resource type="Script" path="res://scripts/world/day_night_cycle.gd" id="3"]
-[ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="4"]
-[ext_resource type="PackedScene" path="res://scenes/creatures/Creature.tscn" id="5"]
-[ext_resource type="Resource" path="res://resources/creatures/vix.tres" id="6"]
-[ext_resource type="Resource" path="res://resources/creatures/brum.tres" id="7"]
-[ext_resource type="Resource" path="res://resources/creatures/lume.tres" id="8"]
-[ext_resource type="PackedScene" path="res://scenes/ui/HUD.tscn" id="9"]
-[ext_resource type="PackedScene" path="res://scenes/ui/TouchControls.tscn" id="10"]
+[ext_resource type="Script" path="res://scripts/world/monster_spawner.gd" id="4"]
+[ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="5"]
+[ext_resource type="PackedScene" path="res://scenes/creatures/Creature.tscn" id="6"]
+[ext_resource type="Resource" path="res://resources/creatures/vix.tres" id="7"]
+[ext_resource type="Resource" path="res://resources/creatures/brum.tres" id="8"]
+[ext_resource type="Resource" path="res://resources/creatures/lume.tres" id="9"]
+[ext_resource type="PackedScene" path="res://scenes/ui/HUD.tscn" id="10"]
+[ext_resource type="PackedScene" path="res://scenes/ui/TouchControls.tscn" id="11"]
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1")
 
-[node name="BlockWorld" type="Node3D" parent="."]
+[node name="VoxelWorld" type="Node3D" parent="."]
 script = ExtResource("2")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
@@ -22,21 +23,24 @@ rotation_degrees = Vector3(-45, -30, 0)
 shadow_enabled = true
 script = ExtResource("3")
 
-[node name="Player" parent="." instance=ExtResource("4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 6, 0.5)
+[node name="MonsterSpawner" type="Node" parent="."]
+script = ExtResource("4")
 
-[node name="Creature_Vix" parent="." instance=ExtResource("5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 6, 3.5)
-data = ExtResource("6")
+[node name="Player" parent="." instance=ExtResource("5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 8, 0.5)
 
-[node name="Creature_Brum" parent="." instance=ExtResource("5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5, 6, 4.5)
+[node name="Creature_Vix" parent="." instance=ExtResource("6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 8, 3.5)
 data = ExtResource("7")
 
-[node name="Creature_Lume" parent="." instance=ExtResource("5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 6, -7.5)
+[node name="Creature_Brum" parent="." instance=ExtResource("6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5, 8, 4.5)
 data = ExtResource("8")
 
-[node name="HUD" parent="." instance=ExtResource("9")]
+[node name="Creature_Lume" parent="." instance=ExtResource("6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 8, -7.5)
+data = ExtResource("9")
 
-[node name="TouchControls" parent="." instance=ExtResource("10")]
+[node name="HUD" parent="." instance=ExtResource("10")]
+
+[node name="TouchControls" parent="." instance=ExtResource("11")]

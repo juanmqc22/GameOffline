@@ -3,6 +3,7 @@ extends CanvasLayer
 ## mensagens contextuais das interações. Ver docs/GDD.md seção 15.
 ## Construído em código, como o resto da UI (ver CLAUDE.md).
 
+var _health_bar: ProgressBar
 var _hunger_bar: ProgressBar
 var _thirst_bar: ProgressBar
 var _sleep_bar: ProgressBar
@@ -21,13 +22,16 @@ func _ready() -> void:
 	bars.custom_minimum_size = Vector2(240, 0)
 	add_child(bars)
 
+	_health_bar = _make_bar("Vida")
 	_hunger_bar = _make_bar("Fome")
 	_thirst_bar = _make_bar("Sede")
 	_sleep_bar = _make_bar("Sono")
+	bars.add_child(_health_bar)
 	bars.add_child(_hunger_bar)
 	bars.add_child(_thirst_bar)
 	bars.add_child(_sleep_bar)
 
+	_health_bar.value = GameState.player_health
 	_hunger_bar.value = GameState.player_hunger
 	_thirst_bar.value = GameState.player_thirst
 	_sleep_bar.value = GameState.player_sleep
@@ -55,6 +59,7 @@ func _ready() -> void:
 	_message_label.modulate.a = 0.0
 	add_child(_message_label)
 
+	GameState.health_changed.connect(func(v): _health_bar.value = v)
 	GameState.hunger_changed.connect(func(v): _hunger_bar.value = v)
 	GameState.thirst_changed.connect(func(v): _thirst_bar.value = v)
 	GameState.sleep_changed.connect(func(v): _sleep_bar.value = v)

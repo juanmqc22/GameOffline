@@ -25,6 +25,11 @@ func _ready() -> void:
 	var eat_button := _make_button("Comer", Vector2(110, 110),
 		Vector2(viewport_size.x - 110 - MARGIN, viewport_size.y - 140 - MARGIN - 110 - 24))
 
+	var hotbar := Hotbar.new()
+	# largura ~5×105 + 4×10 = 565; centrada, acima da borda inferior
+	hotbar.position = Vector2(viewport_size.x * 0.5 - 282, viewport_size.y - 105 - 16)
+	add_child(hotbar)
+
 	var player := get_tree().get_first_node_in_group("player")
 	if player != null:
 		action_button.pressed.connect(Callable(player, "try_interact"))
