@@ -12,7 +12,7 @@ const MARGIN: float = 40.0
 func _ready() -> void:
 	var viewport_size := get_viewport().get_visible_rect().size
 
-	var joystick := VirtualJoystick.new()
+	var joystick := TouchJoystick.new()
 	joystick.name = "MoveJoystick"
 	joystick.size = Vector2(JOYSTICK_SIZE, JOYSTICK_SIZE)
 	joystick.position = Vector2(MARGIN, viewport_size.y - JOYSTICK_SIZE - MARGIN)

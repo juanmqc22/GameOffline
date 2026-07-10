@@ -23,7 +23,7 @@ const ATTACK_DAMAGE: float = 25.0
 const TAP_MAX_DRAG: float = 16.0 # px — mais que isso é arraste de câmera, não toque
 const TAP_MAX_SECONDS: float = 0.35
 
-var _joystick: VirtualJoystick = null
+var _joystick: TouchJoystick = null
 var _camera_yaw: float = 0.0
 var _camera_touch_index: int = -1
 var _last_touch_position: Vector2 = Vector2.ZERO
@@ -62,7 +62,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				if _touch_drag_distance < TAP_MAX_DRAG and held < TAP_MAX_SECONDS:
 					_pending_tap = event.position
 	elif event is InputEventScreenDrag and event.index == _camera_touch_index:
-		var delta_x := event.position.x - _last_touch_position.x
+		var delta_x: float = event.position.x - _last_touch_position.x
 		_touch_drag_distance += event.position.distance_to(_last_touch_position)
 		_last_touch_position = event.position
 		_camera_yaw -= delta_x * 0.01 * camera_orbit_speed

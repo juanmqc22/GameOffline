@@ -1,7 +1,8 @@
 extends Control
-class_name VirtualJoystick
+class_name TouchJoystick
 ## Joystick virtual simples (polegar esquerdo). Sem depender de texturas —
 ## desenha dois círculos via _draw(). Trocar por arte depois é só sobrescrever _draw().
+## ("VirtualJoystick" é classe nativa desde o Godot 4.7 — o nome daqui precisou mudar.)
 
 @export var radius: float = 80.0
 @export var knob_radius: float = 32.0
@@ -36,8 +37,8 @@ func _gui_input(event: InputEvent) -> void:
 			output = Vector2.ZERO
 			queue_redraw()
 	elif event is InputEventScreenDrag and event.index == _touch_index:
-		var delta := event.position - _base_position
-		var clamped := delta.limit_length(radius)
+		var delta: Vector2 = event.position - _base_position
+		var clamped: Vector2 = delta.limit_length(radius)
 		_knob_position = _base_position + clamped
 		output = clamped / radius
 		queue_redraw()
